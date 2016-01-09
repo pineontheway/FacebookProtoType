@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+		<meta charset="utf-8">
+		<title>Facebook</title>
+		<meta name="generator" content="Bootply" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css">
+	    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+		<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+<script>
+	var facebook = angular.module('Facebook', []);
+	//defining the login controller
+	facebook.controller('login', function($scope, $http) {
+		$scope.unexpected_error = true;
+		$scope.submit = function() {
+			$http({
+				method : "POST",
+				url : '/checklogin',
+				data : {
+					"email" : $scope.email,
+					"password" : $scope.password
+				}
+			}).success(function(result) {
+				if(result.status == "success")
+					window.location = '/homepage';
+				else if(result.status=="fail")
+				{
+					if(result.msg=='No Such User'){
+						alert("No Such User found. Please Register");
+						window.location = '/signup';
+					}
+					else if(result.msg=='Incorrect Login'){
+						alert(result.msg);
+					}
+				}
+			}).error(function(error) {
+				$scope.unexpected_error = false;
+			});
+		};
+	});
+	
+	
+	facebook.controller('signup', function($scope, $http) {
+		$scope.submit = function() {
+			$http({
+				method : "POST",
+				url : '/usersignup',
+				data : {"firstName" : $scope.firstName , "lastName": $scope.lastName,"email":$scope.email,"confirmEmail":$scope.confirmEmail,"signupPassword":$scope.signupPassword,"gender":$scope.gender}
+			}).success(function(data) {
+				if(data.status=="success"){
+					alert(data.msg);
+					window.location.assign("/gettingStarted"); 
+				}
+				else if(data.status=="fail"){
+					alert(data.msg);
+				}
+			}).error(function(error) {
+				alert("error");
+			});
+		};
+	});
+
+</script>
+</head>
+<body ng-app="Facebook">
+
+<div class="wrapper" >
+    <div class="box">
+        <div class="row">
+		
+              
+                      
+          <div class="navbar navbar-default navbar-static-top navbar-transparent">  
+                    <div class="navbar-header" style="margin-left:100px; padding-right:300px;">
+                      
+                      <a href="/" class="navbar-brand logo"><h1><strong>facebook</strong></h1></a>
+                  	</div>
+                  	<nav class="collapse navbar-collapse" role="navigation">
+                    <form ng-controller="login" id="loginForm" ng-submit="submit();">
+				<table cellspacing="0" role="presentation">
+					<tbody>
+						<tr>
+							<td>
+					        	<label for="email" style="font-weight:normal;font-size:12px;color:#fff;">Email or Phone</label>
+					        </td>
+					        <td></td>
+					        <td>
+					        	<label for="pass" style="font-weight:normal;font-size:12px;color:#fff;">Password</label>
+					        </td>
+					        <td></td>
+					        <td></td>
+						</tr>
+						<tr height="2">
+							<td>
+									<input type="text" id="emailLogin" class="inputtext" name="email" ng-model="email">
+									<!--<strong ng-hide="email_empty">Email is empty</strong>-->
+							</td>
+							<td>
+								&nbsp;&nbsp;&nbsp;&nbsp;
+							</td>
+							<td>
+									<input type="password" id="passwordLogin" class="inputtext" name="password" ng-model="password">
+									<!--<strong ng-hide="password_empty">Password is empty</strong>-->
+							</td>
+							<td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+							<td>
+								<label class="loginButton" id="loginButton" >
+								<input type="submit" class="loginButtonHomepage" value="Log In" />
+								</label>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<input type="checkbox"/>
+								<label style="font-weight:normal;font-size:12px;color:#9daccb;">Keep me logged in</label>
+							</td>
+							<td>
+								
+							</td>
+							<td>
+								<a href="" style="font-weight:normal;font-size:12px;color:#9daccb;">Forgot your password?</a>
+							</td>
+							<td></td>
+							<td></td>
+						</tr>
+						<div class="col-md-12" style="margin: 0px;">
+							<div class="alert alert-danger" ng-hide="unexpected_error">
+								<strong>Unexpected error, try again</strong>
+							</div>
+						</div>
+						</tbody>
+					</table>
+				</form>	
+
+					</nav>
+           </div>
+                
+            
+            <!-- main right col -->
+            <div class="column col-sm-12 col-xs-11" id="main">
+                
+          
+              
+                <div class="padding">
+                    <div class="full col-sm-12">
+                      
+                        <!-- content -->                      
+                      	<div class="row">
+                          
+                         <!-- main col left --> 
+                         <div class="col-sm-7">
+                         <div class="media">
+  <h3><strong>Facebook helps you connect and share with the people in your life.</strong></h3>
+  <img src="http://rack.2.mshcdn.com/media/ZgkyMDEyLzEwLzI4LzE0XzA4XzQwXzYyX2ZpbGUKcAl0aHVtYgkxMjAweDk2MDA-/07b408b4" class="img-responsive" width="900" height="1400">
+                                
+</div>
+                                                     </div>
+                          
+                          <!-- main col right -->
+                          <div class="col-sm-5">
+                               
+                                <div class="_58mf">
+<div id="reg_box" class="registration_redesign">
+<h2><strong>Sign up</strong></h2>
+<h4 style="font-weight:normal;" class="loginpageText">It's Free and always will be</h4>
+			<div style="width:399px">
+				<form ng-submit="submit();" id="signupForm" ng-controller ="signup">
+					<input type="text" class="form-control" style="width:44%;display:inline" name="firstname" id="firstname" ng-model="firstName" placeholder="First Name">&nbsp;&nbsp;&nbsp;
+					<input type="text" class="form-control" style="width:44%;display:inline" name="lastName" id="lastName" ng-model="lastName" placeholder="Last Name"><div><br/></div>
+					<input type="text" class="form-control" name="email" id="email" ng-model="email" placeholder="Email or Phone Number" style="width:370px">
+					<div><br/></div><input type="text" class="form-control" name="confirmEmail" id="confirmemail" ng-model="confirmEmail" placeholder="Re-enter email or phone number" style="width:370px">
+					<div><br/>
+					<input type="password" class="form-control" name="signupPassword" id="signupPassword" placeholder="New Password" ng-model="signupPassword" style="width:370px">
+					</div>
+					
+				<div>
+					<br/><input type="radio" ng-model="gender" name="gender" id="gender" value="Male"/>Male
+						<input type="radio" name="gender" ng-model="gender" id="gender" value="female"/>Female<br/>
+				</div><br/>
+				
+				<div>
+					<label class="loginButton">
+						<input type="submit" class="signupButton" value="Sign Up" style="width:200px"/>
+					</label>
+				</div>
+				</form>
+				
+			</div>
+		
+</div>
+									 
+									 </div>
+									 
+                                      
+
+                            
+                          </div>
+                       </div><!--/row-->
+                      
+                        <div class="row">
+                          <div class="col-sm-6">
+                             </div>
+                        </div>
+                      
+                        <div class="row" id="footer">    
+                          <div class="col-sm-6">
+                            
+                          </div>
+                          <div class="col-sm-6">
+                           
+                          </div>
+                        </div>
+                      
+                      <hr>
+                      
+                      <h4 class="text-center">
+                      <a href="http://bootply.com/96266" target="ext"></a>
+                      </h4>
+                        
+                      <hr>
+                        
+                      
+                    </div><!-- /col-9 -->
+                </div><!-- /padding -->
+            </div>
+            <!-- /main -->
+          
+        </div>
+    </div>
+</div>
+
+
+	 
+	 	
+	 
+</body>
+</html>

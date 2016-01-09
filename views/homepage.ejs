@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<link rel="stylesheet"href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	
+		<title>Facebook</title>
+		<meta name="generator" content="Bootply" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css">
+	<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<script>
+			var facebook = angular.module('Facebook', []);
+			facebook.controller('newsfeedController', function($scope, $http) {
+			$scope.submit = function() {
+				$http({
+					method : "POST",
+					url : '/postNewsfeed',
+					data : {
+						"post" : $scope.newsfeed
+					}
+				}).success(function(data) {
+					//checking the response data for statusCode
+					if (data.status == 'fail') {
+						alert("error");
+					}
+					else if(data.status=='success'){
+						alert(data.msg);
+						window.location.assign("/homepage");
+					} 
+				}).error(function(error) {
+					$scope.unexpected_error = false;
+					$scope.invalid_login = true;
+				});
+			};
+		});
+	</script>
+	<title>Facebook</title>
+</head>
+<body ng-app="Facebook">
+	
+<div class="wrapper">
+    <div class="box">
+        <div class="row">
+              <!-- top nav -->
+              	<div class="navbar navbar-default navbar-fixed-top navbar-transparent">  
+                    <div class="navbar-header" style="margin-left:50px;">
+                    
+                      <a href="/" class="navbar-brand logo">f</a>
+                  	</div>
+                  	<nav class="collapse navbar-collapse" role="navigation">
+                    <form class="navbar-form navbar-left">
+                        <div class="input-group input-group-sm" style="max-width:960px;">
+                          <input type="search" class="form-control" placeholder="Search" size="80" name="srch-term" id="srch-term">
+                          <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                          </div>
+                        </div>
+                    </form>
+                    <ul class="nav navbar-nav">
+                      <li>
+                        <a href="homepage"><i class="glyphicon glyphicon-home"></i> Home</a>
+                      </li>
+              
+                      <li>
+                        <a href="/viewProfile"><span class="badge"><%=username%></span></a>
+                      </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i></a>
+                        <ul class="dropdown-menu">
+                        <li><a href="editProfile">Edit Profile</a></li>
+                          <li><a href="friends">Friends</a></li>
+                          <li><a href="groups">Groups</a></li>
+                          <li><a href="logout">Logout</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  	</nav>
+                </div>
+                <!-- /top nav -->
+              
+                
+            <!-- sidebar -->
+            <div class="column col-sm-3 col-xs-1 sidebar-offcanvas" id="sidebar">
+              
+              	<ul class="nav">
+          			<li><a href="#" data-toggle="offcanvas" class="visible-xs text-center"><i class="glyphicon glyphicon-chevron-right"></i></a></li>
+            	</ul>
+               
+                <ul class="nav hidden-xs" id="lg-menu">
+                    <li class="active"><a href="friends"><h3>Friends</h3></a></li>
+                    <li><a href="groups"><h3>Groups</h3></a></li>
+                </ul>
+                
+          
+              
+            </div>
+            <!-- /sidebar -->
+          
+            <!-- main right col -->
+			<div class="col-md-9">
+			<form ng-submit="submit();" id="newsfeedForm" ng-controller="newsfeedController">
+				<table bgcolor="white" background-color: none;>
+				<tr>
+				</tr>
+				<tr>
+					<td><a href="" style="font-weight:bold" class="facebook_homepage_click loginpageText"><h3>Update Status</h3></a></td>
+				</tr>
+					<tr><td colspan=3><textarea class="newsfeed_textarea" rows="3" cols="50" style="width:500px" name="newsfeed" ng-model="newsfeed" id="newsfeed"></textarea></td></tr>
+					<tr><td colspan=3 align="right"><input type="submit" class="postButtonNewsfeed" value="Post" /></td></tr>
+				</table>
+			</form>
+			<% if(newsFeed.length<=0){%>
+				<div style="height:auto,width:auto">
+					<label>No Posts to show</label>
+				</div>
+			<%}
+			else{%>
+				<div class="homepage_main">
+				<table class="table">
+					<% for(var i=0;i<newsFeed.length;i++){%>
+					<tr><td><a href=""><h4><%=newsFeed[i].firstName%></h4></td></tr></a>
+					<tr><td><h5><%=newsFeed[i].newsfeed%></h5><br/></td></tr>
+					<%}%>
+				</table>
+				</div>
+			<%}%>
+		</div>
+		
+
+                
+          <!--/row-->
+           
+                      
+                    </div><!-- /col-9 -->
+                </div><!-- /padding -->
+            </div>
+            <!-- /main -->
+          
+        </div>
+    </div>
+</div>
+
+
+<!--post modal-->
+<div id="postModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">X</button>
+			Update Status
+      </div>	
+      <div class="modal-body">
+          <form class="form center-block">
+            <div class="form-group">
+              <textarea class="form-control" placeholder="What do you want to share?"></textarea>
+            </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+          <div>
+          <button class="btn btn-primary btn-sm" data-dismiss="modal">Post</button>
+            <ul class="pull-left list-inline"><li><a href=""><i class="glyphicon glyphicon-upload"></i></a></li><li><a href=""><i class="glyphicon glyphicon-camera"></i></a></li><li><a href=""><i class="glyphicon glyphicon-map-marker"></i></a></li></ul>
+		  </div>	
+      </div>
+  </div>
+  </div>
+</div>
+	<!-- script references -->
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/scripts.js"></script>
+	</body>
+</html>

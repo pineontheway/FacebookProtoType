@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<link rel="stylesheet"href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<script src="angularjs/login.js"></script>
+	<title>Edit Profile</title>
+	<script>
+		var facebook = angular.module('Facebook', []);
+			facebook.controller('profileController', function($scope, $http) {
+			$scope.submit = function() {
+				$http({
+					method : "POST",
+					url : '/editProfileAftersignin',
+					data : {
+						"summary" : $scope.summary,
+						"work" :$scope.work,
+						"education" : $scope.education,
+						"contact" : $scope.contact,
+						"lifeevents" : $scope.lifeevents,
+						"interests" : $scope.interests,
+						"music":$scope.music,
+						"shows":$scope.shows,
+						"sports":$scope.sports
+					}
+				}).success(function(data) {
+					if (data.status == 'fail') {
+						alert(data.msg);
+					}
+					else if(data.status=='success'){
+						alert(data.msg);
+						window.location.assign("/viewProfile");
+					} 
+				}).error(function(error) {
+					alert("error");
+				});
+			};
+		});
+	</script>
+</head>
+<body ng-app="Facebook">
+	
+				<div class="row">
+              <!-- top nav -->
+              	<div class="navbar navbar-default navbar-fixed-top navbar-transparent">  
+                    <div class="navbar-header" style="margin-left:50px;">
+                    
+                      <a href="/" class="navbar-brand logo">f</a>
+                  	</div>
+                  	<nav class="collapse navbar-collapse" role="navigation">
+                    <form class="navbar-form navbar-left">
+                        <div class="input-group input-group-sm" style="max-width:960px;">
+                          <input type="search" class="form-control" placeholder="Search" size="80" name="srch-term" id="srch-term">
+                          <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                          </div>
+                        </div>
+                    </form>
+                    <ul class="nav navbar-nav">
+                      <li>
+                        <a href="homepage"><i class="glyphicon glyphicon-home"></i> Home</a>
+                      </li>
+              
+                      <li>
+                        <a href="/viewProfile"><span class="badge"><%=username%></span></a>
+                      </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i></a>
+                        <ul class="dropdown-menu">
+                        <li><a href="editProfile">Edit Profile</a></li>
+                          <li><a href="friends">Friends</a></li>
+                          <li><a href="groups">Groups</a></li>
+                          <li><a href="logout">Logout</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  	</nav>
+                </div>
+        </div>
+	<nav>
+		<div class="col-md-1">
+		
+		</div>
+		<div class="col-md-7">
+			<div class="row">
+				
+			</div>
+			<div class="row">
+				
+					<div class="container-fluid">
+						
+						<a href="/friends">About</a>
+					</div>
+					<div class="horizontalLine">
+					</div>
+					<div class="container-fluid">
+						<form ng-submit="submit();" id="editProfileForm" ng-controller="profileController">
+							
+							<strong>Summary</strong>
+							<textarea value="<%= summary%>" id="summary" class="form-control" ng-model="summary" style="resize:none"></textarea>
+							<strong>Work Summary</strong><br/>
+							<%if(work.length>0)
+							{%>
+								<%for(var i=0;i<work.length;i++){%>
+								<input type="text" value="<%= work[i].work%>" id="work" ng-model="work" class="form-control"/>
+								<%
+								}
+							}%>
+							<strong>Education</strong>
+							<%if(education.length>0){
+								for(var i=0;i<education.length;i++){%>
+								<input type="text" value="<%= education[i].education%>" id="education" ng-model="education" class="form-control"/>
+								<%
+								}
+							}%>
+							<strong>Contact Information</strong>
+							<%if(contact.length>0){
+								for(var i=0;i<contact.length;i++){%>
+								<input type="number" value="<%= contact[i].contact%>" id="contact" ng-model="contact"  maxlength="10" class="form-control"/>
+								<%
+								}
+							}%>
+							<strong>Life Events</strong>
+							<%if(lifeevents.length>0){
+								for(var i=0;i<lifeevents.length;i++){%>
+								<input type="text" value="<%= lifeevents[i].lifeevents%>" id="lifeevents" ng-model="lifeevents" class="form-control"/>
+								<%
+								}
+							}%>
+							<strong>Music</strong>
+							<input type="text" value="<%=music%>" id="music" ng-model="music" class="form-control"/>
+							<strong>Shows</strong>
+							<input type="text" value="<%=shows%>" id="shows" ng-model="shows" class="form-control"/>
+							<strong>Sports</strong>
+							<input type="text" value="<%=sports%>" id="sports" ng-model="sports" class="form-control"/>
+							<input type="submit" value="Save" class="btn .btn-default"/>
+							</table>
+						</form>
+					</div>
+				
+			</div>
+		</div>
+		<div class="col-md-4">
+		
+		</div>
+	</nav>
+</body>
+</html>

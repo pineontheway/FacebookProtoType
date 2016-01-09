@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<link rel="stylesheet"href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<script src="angularjs/login.js"></script>
+	<title>Edit Profile</title>
+</head>
+<body ng-app="Facebook">
+	<div class="row">
+              <!-- top nav -->
+              	<div class="navbar navbar-default navbar-fixed-top navbar-transparent">  
+                    <div class="navbar-header" style="margin-left:50px;">
+                    
+                      <a href="/" class="navbar-brand logo">f</a>
+                  	</div>
+                  	<nav class="collapse navbar-collapse" role="navigation">
+                    <form class="navbar-form navbar-left">
+                        <div class="input-group input-group-sm" style="max-width:960px;">
+                          <input type="search" class="form-control" placeholder="Search" size="80" name="srch-term" id="srch-term">
+                          <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                          </div>
+                        </div>
+                    </form>
+                    <ul class="nav navbar-nav">
+                      <li>
+                        <a href="homepage"><i class="glyphicon glyphicon-home"></i> Home</a>
+                      </li>
+              
+                      <li>
+                        <a href="/viewProfile"><span class="badge"><%=username%></span></a>
+                      </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i></a>
+                        <ul class="dropdown-menu">
+                        <li><a href="editProfile">Edit Profile</a></li>
+                          <li><a href="friends">Friends</a></li>
+                          <li><a href="groups">Groups</a></li>
+                          <li><a href="logout">Logout</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  	</nav>
+                </div>
+        </div>
+	<nav>
+		<div class="col-md-1">
+		
+		</div>
+		<div class="col-md-7">
+			
+			<div class="row">
+			
+			</div>
+			<div class="row">
+				
+					<div class="container-fluid">
+						
+						<a href="/viewProfile"><h3>Profile</h3></a>
+						
+					</div>
+					<div class="horizontalLine">
+					</div>
+					<div class="container-fluid">
+						<strong>Summary</strong>
+						<textarea id="summary" class="form-control" disabled><%= summary%></textarea><br/>
+						<strong>Work Summary</strong><br/>
+						<%for(var i=0;i<work.length;i++){%>
+							<input type="text" value="<%= work[i].work%>" class="form-control" disabled/><br/>
+							<%
+						}%>
+						<strong>Education</strong><br/>
+						<%for(var i=0;i<education.length;i++){%>
+							<input type="text" value="<%= education[i].education%>" class="form-control" disabled/><br/>
+							<%
+						}%>
+						<strong>Contact Information</strong><br/>
+						<%for(var i=0;i<contact.length;i++){%>
+							<input type="text" value="<%= contact[i].contact%>" class="form-control" disabled/><br/>
+							<%
+						}%>
+						<strong>Life Events</strong><br/>
+						<%for(var i=0;i<lifeevents.length;i++){%>
+							<input type="text" value="<%= lifeevents[i].lifeevents%>" class="form-control" disabled/><br/>
+							<%
+						}%>
+						<strong>Music</strong>
+						<input type="text" value="<%= music%>" class="form-control" disabled/><br/>
+						<strong>Shows</strong>
+						<input type="text" value="<%= shows%>" class="form-control" disabled/><br/>
+						<strong>Sports</strong>
+						<input type="text" value="<%= sports%>" class="form-control" disabled/><br/>
+						<a href="/editProfile"><input type="submit" value="Edit Profile" class="btn .btn-default"/></a>
+					</div>
+				
+			</div>
+		</div>
+		<div class="col-md-4">
+		
+		</div>
+	</nav>
+</body>
+</html>

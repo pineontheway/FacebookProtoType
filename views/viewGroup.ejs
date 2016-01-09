@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<link rel="stylesheet"href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+	<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+	<meta http-equiv="Pragma" content="no-cache" />
+	<meta http-equiv="Expires" content="0" />
+	<script>
+		function deleteMember(member,groupName){
+				$.ajax({
+					type: "POST",
+					url:"/deleteMemberFromGroup",
+					data:{
+						"groupName":groupName,
+						"member":member
+					},
+					success: function(result){
+						alert("Member deleted successfully");
+						window.location.assign("/groups");
+					},
+					error: function(error){
+						
+					}
+				});
+			}
+	</script>
+</head>
+<body>
+	<div class="row">
+              <!-- top nav -->
+              	<div class="navbar navbar-default navbar-fixed-top navbar-transparent">  
+                    <div class="navbar-header" style="margin-left:50px;">
+                    
+                      <a href="/" class="navbar-brand logo">f</a>
+                  	</div>
+                  	<nav class="collapse navbar-collapse" role="navigation">
+                    <form class="navbar-form navbar-left">
+                        <div class="input-group input-group-sm" style="max-width:960px;">
+                          <input type="search" class="form-control" placeholder="Search" size="80" name="srch-term" id="srch-term">
+                          <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                          </div>
+                        </div>
+                    </form>
+                    <ul class="nav navbar-nav">
+                      <li>
+                        <a href="homepage"><i class="glyphicon glyphicon-home"></i> Home</a>
+                      </li>
+              
+                      <li>
+                        <a href="/viewProfile"><span class="badge"><%=username%></span></a>
+                      </li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                      <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-user"></i></a>
+                        <ul class="dropdown-menu">
+                        <li><a href="editProfile">Edit Profile</a></li>
+                          <li><a href="friends">Friends</a></li>
+                          <li><a href="groups">Groups</a></li>
+                          <li><a href="logout">Logout</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  	</nav>
+                </div>
+        </div>
+	<div class="row" style="height: auto; width: auto; solid black;">
+				<%if(groupMembers.length>0){%>
+					<table class="table" cellpadding="0" cellspacing="0">
+					<thead><tr><th colspan=4><h3>Members</h3></th></tr></thead>
+					<tbody>
+					<%
+					for(var i=0;i<groupMembers.length;i++){%>
+					<tr>
+						<td><h4><%= groupMembers[i].firstname%></h4></td>
+						<td><h4><input type="button" onclick="deleteMember('<%=groupMembers[i].groupmembers%>','<%=groupName%>');" value="Delete Member"/></h4></td>
+						<td colspan=2" width="200"></td>
+					</tr>
+					<%
+					}%>
+					</tbody>
+					</table>
+				<%}%>
+			</div>
+</body>
+</html>

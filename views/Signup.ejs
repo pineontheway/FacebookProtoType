@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Signup</title>
+	<link rel='stylesheet' href='/stylesheets/style.css' />
+	<link rel="stylesheet"href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://bootswatch.com/flatly/bootstrap.min.css">
+	
+		<meta name="generator" content="Bootply" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<link rel="stylesheet" href="https://bootswatch.com/united/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	<script src= "http://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script> 
+	<link rel="stylesheet" href="/stylesheets/sweet-alert.css">
+	<script>
+		var facebook = angular.module('Facebook', []);
+		facebook.controller('signup', function($scope, $http) {
+		$scope.submit = function() {
+			var error="";
+			var firstname_verification=$scope.firstName;
+			var lastname_verification= $scope.lastName;
+			var email_verification=$scope.email;
+			var confirmemail_verification=$scope.confirmEmail;
+			var password_verification=$scope.signupPassword;
+			var gender_verification=$scope.gender;
+			
+			var val=/^[a-z A-Z]*$/;
+			if(firstname_verification=="" || firstname_verification==undefined)
+			{
+				document.getElementById("firstname").style.background="#ED2939";
+				error+="First Name is empty.\n";
+			}
+			else if(!val.test(firstname_verification))
+			{
+				document.getElementById("firstname").style.background="#ED2939";
+				error+="First Name contains illegal characters\n";
+			}
+			else
+				document.getElementById("firstname").style.background="white";
+				
+			
+			if(lastname_verification=="" || lastname_verification==undefined)
+			{
+				document.getElementById("lastName").style.background="#ED2939";
+				error+="Last Name is empty.\n";
+			}
+			else if(!val.test(lastname_verification))
+			{
+				document.getElementById("lastName").style.background="#ED2939";
+				error+="Last Name contains illegal characters\n";
+			}
+			else
+				document.getElementById("lastName").style.background="white";
+			
+			if(!(email_verification==confirmemail_verification)){
+				error+="'Email' and 'Confirm email' are not matched"
+				document.getElementById("email").style.background="#ED2939";
+				document.getElementById("confirmemail").style.background="#ED2939";
+			}
+			else{
+				document.getElementById("email").style.background="white";
+				document.getElementById("confirmemail").style.background="white";
+			}
+			
+			if(confirmemail_verification=="" || confirmemail_verification==undefined)
+			{
+				document.getElementById("confirmemail").style.background="#ED2939";
+			 	error+="Confirmation Email is empty.\n";
+			}
+				
+			
+			var email_regexp=/^[a-z A-Z 0-9]*$/
+			var dot,at;
+			at=document.getElementById("email").value.indexOf("@");
+			dot=document.getElementById("email").value.lastIndexOf(".");
+			if(email_verification=="" || email_verification==undefined)
+			{
+				document.getElementById("email").style.background="#ED2939";
+			 	error+="Email is empty.\n";
+			}
+			else if(at<1 || dot-at<2)
+			{
+				document.getElementById("email").style.background="#ED2939";
+				error+="Email id is wrongly entered\n";
+			}
+			else
+				document.getElementById("email").style.background="white";
+				
+			if(password_verification=="" || password_verification==undefined)
+			{
+				document.getElementById("signupPassword").style.background="#ED2939";
+				error+="Password is empty.\n";
+			}
+			else if(password_verification.length<6 || password_verification.length>15)
+			{
+				document.getElementById("signupPassword").style.background="#ED2939";
+				error+="Password must be in between 6 and 15 characters in length\n";
+			}
+			else
+				document.getElementById("signupPassword").style.background="white";
+			var gender=$scope.gender;
+			if($scope.gender=="" || $scope.gender==undefined)
+			{
+				error+="Please select gender\n";
+			}
+			
+			if(error!=""){
+				alert(error);
+				return false;
+			}
+			
+			$http({
+				method : "POST",
+				url : '/usersignup',
+				data : {"firstName" : $scope.firstName , "lastName": $scope.lastName,"email":$scope.email,"confirmEmail":$scope.confirmEmail,"signupPassword":$scope.signupPassword,"gender":$scope.gender}
+			}).success(function(data) {
+				if(data.status=="success"){
+					alert(data.msg);
+					window.location.assign("/gettingStarted"); 
+				}
+				else if(data.status=="fail"){
+					document.getElementById('emailExists').style.display = "block";
+					document.getElementById('emailExists').innerHTML = data.msg;
+				}
+			}).error(function(error) {
+				alert("error");
+			});
+		};
+	});
+	</script>
+</html>
+<body ng-app="Facebook">
+	<nav class="navbar navbar-default" style=" background-color: #3b5998;margin-bottom:0px;">
+		<div class="col-md-1">
+				
+		</div>
+		<div class="col-md-10">
+			<label style="margin-top: 30px;font-size:36px;color:white;float:left" class="loginpageText"><a href="/homepage" style="color:white" class="facebook_homepage_click">facebook</a></label>&nbsp;&nbsp;
+			<a href="/homepage"><input type="button" value="Signin" style="font-family:helvetica, arial, sans-serif;font-weight:bold;background-color:#69a74e;border-color:#3b6e22 #3b6e22 #2c5115;margin-top:45px;color:white;"/></a>
+		</div>
+		<div class="col-md-1">
+		
+		</div>
+	</nav>
+	<nav class="navbar navbar-default" style=" background-color: #F5F5F5;margin-bottom:0px;height:600px">
+		<div class="col-md-4">
+				
+		</div>
+		<div class="col-md-4">
+			<h2>Sign Up</h2>
+			<h4 style="font-weight:normal;" class="loginpageText">It's Free and always will be</h4>
+			<form ng-submit="submit();" id="signupForm" ng-controller ="signup">
+					<input type="text" name="firstname" class="form-control" id="firstname" ng-model="firstName" placeholder="First Name">&nbsp;&nbsp;&nbsp;<br/>
+					<input type="text" name="lastName" class="form-control" id="lastName" ng-model="lastName" placeholder="Last Name"><div><br/></div>
+					<input type="text" name="email" class="form-control" id="email" ng-model="email" placeholder="Email or Phone Number">&nbsp;&nbsp;<label class="label label-warning" id="emailExists" style="display:none";></label><br/>
+					<input type="text" class="form-control" name="confirmEmail" id="confirmemail" ng-model="confirmEmail" placeholder="Re-enter email or phone number"><br/>
+					<input type="password" class="form-control" name="signupPassword" id="signupPassword" placeholder="New Password" ng-model="signupPassword">
+				<div>
+					<br/><input type="radio" ng-model="gender" name="gender" id="gender" value="Male"/>Male
+						<input type="radio" name="gender" ng-model="gender" id="gender" value="female"/>Female<br/>
+				</div><br/>
+				<div>
+				<p><label style="font-weight:normal;font-size:11px">By clicking Sign Up, you agree to our <a href="">Terms</a> and that you have read our <a href="">Data Policy</a>, including our <a href="">Cookie Use</a>.</label></p>
+				</div>
+
+				<div>
+					<label class="loginButton">
+						<input type="submit" class="signupButton" style="background: linear-gradient(#67ae55, #578843);width:200px" value="Sign Up"/>
+					</label>
+				</div>
+				</form>		
+		</div>
+		<div class="col-md-4">
+				
+		</div>
+	</nav>
+</body>
+</html>

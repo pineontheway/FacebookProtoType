@@ -1,0 +1,29 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+  font-size:12px;
+}
+
+.loginPanel a:hover {
+  text-decoration: none;
+  cursor: hand;
+}
+
+.loginPanel a:visited {
+  text-decoration: none;
+  cursor: hand;
+}
+
+.loginPanel {
+  text-decoration: none;
+  cursor: hand;
+  color: #337ab7;
+  font-size:12px;
+  font-weight: normal;
+}
+
+
